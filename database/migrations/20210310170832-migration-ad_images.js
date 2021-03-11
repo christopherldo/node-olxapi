@@ -21,7 +21,7 @@ module.exports = {
       default: {
         allowNull: false,
         type: Sequelize.BOOLEAN,
-        default: 0,
+        defaultValue: 0,
       },
     });
   },

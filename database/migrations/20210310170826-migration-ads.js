@@ -40,25 +40,25 @@ module.exports = {
       },
       price: {
         allowNull: false,
-        type: DataTypes.DECIMAL,
+        type: Sequelize.DECIMAL,
       },
       price_negotiable: {
         allowNull: false,
-        type: DataTypes.BOOLEAN,
-        default: 0,
+        type: Sequelize.BOOLEAN,
+        defaultValue: 0,
       },
       description: {
-        type: DataTypes.TEXT,
+        type: Sequelize.TEXT,
       },
       view: {
         allowNull: false,
-        type: DataTypes.INTEGER,
-        default: 0,
+        type: Sequelize.INTEGER,
+        defaultValue: 0,
       },
       status: {
         allowNull: false,
-        type: DataTypes.STRING,
-        default: 'active',
+        type: Sequelize.STRING,
+        defaultValue: 'active',
       },
     });
   },
