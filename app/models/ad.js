@@ -10,7 +10,7 @@ module.exports = (sequelize, DataTypes) => {
     price_negotiable: DataTypes.BOOLEAN,
     description: DataTypes.TEXT,
     views: DataTypes.INTEGER,
-    status: DataTypes.BOOLEAN,
+    status: DataTypes.STRING,
   });
 
   return Ad;
