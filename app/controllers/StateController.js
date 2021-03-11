@@ -1,12 +1,10 @@
 const {
-  StateDAOMysql
+  StateService,
 } = require('../services');
-
-const StateDao = StateDAOMysql;
 
 module.exports = {
   getStates: async (req, res) => {
-    const states = await StateDao.find();
+    const states = await StateService.find();
     res.json({
       states
     });
