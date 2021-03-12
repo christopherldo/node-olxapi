@@ -13,6 +13,10 @@ const {
   AuthMiddleware,
 } = require('../app/middlewares');
 
+const {
+  AuthValidator,
+} = require('../app/validators');
+
 router.get('/ping', (req, res) => {
   res.json({
     pong: true,
@@ -22,7 +26,10 @@ router.get('/ping', (req, res) => {
 router.get('/states', StateController.getStates);
 
 router.post('/user/signin', AuthController.signIn);
-router.post('/user/signup', AuthController.signUp);
+router.post('/user/signup',
+  AuthValidator.signUp,
+  AuthController.signUp
+);
 
 router.get('/user/me',
   AuthMiddleware.private,
