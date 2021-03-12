@@ -25,7 +25,11 @@ router.get('/ping', (req, res) => {
 
 router.get('/states', StateController.getStates);
 
-router.post('/user/signin', AuthController.signIn);
+router.post('/user/signin',
+  AuthValidator.signIn,
+  AuthController.signIn
+);
+
 router.post('/user/signup',
   AuthValidator.signUp,
   AuthController.signUp

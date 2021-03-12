@@ -17,11 +17,6 @@ const getUFs = async () => {
   });
 };
 
-const getUserByEmail = async email => {
-  const user = await AuthService.getUserByEmail(email);
-  return user;
-};
-
 getUFs();
 
 module.exports = {
@@ -41,7 +36,7 @@ module.exports = {
       errorMessage: 'O seu e-mail precisa ser um e-mail válido',
       custom: {
         options: async value => {
-          if (await getUserByEmail(value)) {
+          if (await AuthService.getUserByEmail(value)) {
             throw new Error('Esse e-mail não está disponível para cadastro');
           };
 
@@ -89,6 +84,17 @@ module.exports = {
           return true;
         },
       },
+    },
+  }),
+  signIn: checkSchema({
+    email: {
+      isEmail: true,
+      normalizeEmail: true,
+      errorMessage: 'O seu e-mail precisa ser um e-mail válido',
+    },
+    password: {
+      notEmpty: true,
+      errorMessage: 'O campo de senha não pode estar vazio',
     },
   }),
 };

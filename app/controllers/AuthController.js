@@ -14,7 +14,61 @@ const secret = process.env.JWT_SECRET;
 
 module.exports = {
   signIn: async (req, res) => {
+    const errors = validationResult(req);
 
+    if (errors.isEmpty() === false) {
+      res.status(400).send({
+        error: errors.mapped(),
+      });
+      return;
+    };
+
+    const data = matchedData(req);
+    const email = data.email;
+    const password = data.password;
+
+    const user = await AuthService.getUserByEmail(email);
+
+    if(user === null){
+      res.status(401).send({
+        error: {
+          email: {
+            msg: 'E-mail e/ou senha inválidos',
+            param: 'email',
+            location: 'body',
+          },
+        },
+      });
+      return;
+    };
+
+    if(await bcrypt.compare(password, user.password) === false) {
+      res.status(401).send({
+        error: {
+          email: {
+            msg: 'E-mail e/ou senha inválidos',
+            param: 'email',
+            location: 'body',
+          },
+        },
+      });
+      return;
+    };
+
+    const token = jwt.sign({
+      sub: user.public_id,
+      name: user.name,
+      iat: Math.round(Date.now() / 1000),
+    }, secret);
+    
+    res.status(200).send({
+      user: {
+        public_id: user.public_id,
+        name: user.name,
+        email: user.email,
+      },
+      token,
+    });
   },
   signUp: async (req, res) => {
     const errors = validationResult(req);
@@ -49,7 +103,7 @@ module.exports = {
     const token = jwt.sign({
       sub: user.public_id,
       name: user.name,
-      iat: Date.now(),
+      iat: Math.round(Date.now() / 1000),
     }, secret);
 
     res.status(200).send({
