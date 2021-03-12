@@ -3,7 +3,8 @@ const {
 } = require('express-validator');
 
 const {
-  StateService
+  StateService,
+  AuthService,
 } = require('../services');
 
 const statesArray = [];
@@ -14,6 +15,11 @@ const getUFs = async () => {
   states.forEach(stateObject => {
     statesArray.push(stateObject.uf);
   });
+};
+
+const getUserByEmail = async email => {
+  const user = await AuthService.getUserByEmail(email);
+  return user;
 };
 
 getUFs();
@@ -33,6 +39,15 @@ module.exports = {
       isEmail: true,
       normalizeEmail: true,
       errorMessage: 'O seu e-mail precisa ser um e-mail válido',
+      custom: {
+        options: async value => {
+          if (await getUserByEmail(value)) {
+            throw new Error('Esse e-mail não está disponível para cadastro');
+          };
+
+          return true;
+        },
+      },
     },
     state: {
       isLength: {

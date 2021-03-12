@@ -13,7 +13,7 @@ module.exports = {
 
     jwt.verify(token, secret, err => {
       if (err) return res.status(500).send({
-        error: 'Não foi possível decodificar seu token.',
+        error: 'Não foi possível decodificar o token da sua sessão.',
       });
 
       next();
