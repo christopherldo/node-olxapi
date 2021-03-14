@@ -18,14 +18,6 @@ module.exports = {
         allowNull: false,
         type: Sequelize.UUID,
       },
-      state: {
-        allowNull: false,
-        type: Sequelize.STRING(2),
-      },
-      email: {
-        allowNull: false,
-        type: Sequelize.STRING(50),
-      },
       category: {
         allowNull: false,
         type: Sequelize.STRING(50),
@@ -50,7 +42,7 @@ module.exports = {
       description: {
         type: Sequelize.TEXT,
       },
-      view: {
+      views: {
         allowNull: false,
         type: Sequelize.INTEGER,
         defaultValue: 0,
