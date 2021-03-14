@@ -1,4 +1,6 @@
-const {User} = require('../models');
+const {
+  User
+} = require('../models');
 
 module.exports = {
   getUserByEmail: async email => {

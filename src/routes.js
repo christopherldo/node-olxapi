@@ -61,4 +61,10 @@ router.post('/ad/:public_id',
   AdController.editAction
 );
 
+router.get('/secret', AuthMiddleware.private, (req, res) => {
+  res.json({
+    all_good: true,
+  });
+})
+
 module.exports = router;

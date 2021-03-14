@@ -29,38 +29,35 @@ module.exports = {
 
     const user = await AuthService.getUserByEmail(email);
 
-    if(user === null){
-      res.status(401).send({
-        error: {
-          email: {
-            msg: 'E-mail e/ou senha inválidos',
-            param: 'email',
-            location: 'body',
-          },
+    const loginError = {
+      error: {
+        email: {
+          msg: 'E-mail e/ou senha inválidos',
+          param: 'email',
+          location: 'body',
         },
-      });
+      },
+    };
+
+    if (user === null) {
+      res.status(401).send(loginError);
       return;
     };
 
-    if(await bcrypt.compare(password, user.password) === false) {
-      res.status(401).send({
-        error: {
-          email: {
-            msg: 'E-mail e/ou senha inválidos',
-            param: 'email',
-            location: 'body',
-          },
-        },
-      });
+    if (await bcrypt.compare(password, user.password) === false) {
+      res.status(401).send(loginError);
       return;
     };
 
     const token = jwt.sign({
+      iss: 'Christopher de Oliveira',
       sub: user.public_id,
       name: user.name,
       iat: Math.round(Date.now() / 1000),
-    }, secret);
-    
+    }, secret, {
+      expiresIn: '1 week',
+    });
+
     res.status(200).send({
       user: {
         public_id: user.public_id,
