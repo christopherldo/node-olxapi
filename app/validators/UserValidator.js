@@ -20,8 +20,9 @@ const getUFs = async () => {
 getUFs();
 
 module.exports = {
-  signUp: checkSchema({
+  editAction: checkSchema({
     name: {
+      optional: true,
       trim: true,
       isLength: {
         options: {
@@ -31,13 +32,21 @@ module.exports = {
       errorMessage: 'O seu nome precisa ter pelo menos 2 caracteres',
     },
     email: {
+      optional: true,
       isEmail: true,
       normalizeEmail: true,
       errorMessage: 'O seu e-mail precisa ser um e-mail válido',
       custom: {
-        options: async value => {
-          if (await UserService.getUserByEmail(value)) {
-            throw new Error('Esse e-mail não está disponível para cadastro');
+        options: async (value, {
+          req
+        }) => {
+          const user = await UserService.getUserByEmail(value);
+          if (user) {
+            if (user.public_id !== req.user.public_id) {
+              throw new Error('Esse e-mail não está disponível para cadastro');
+            };
+
+            return true;
           };
 
           return true;
@@ -45,6 +54,7 @@ module.exports = {
       },
     },
     state: {
+      optional: true,
       isLength: {
         options: {
           min: 2,
@@ -63,6 +73,7 @@ module.exports = {
       errorMessage: 'Você precisa fornecer o UF de um estado brasileiro',
     },
     password: {
+      optional: true,
       isLength: {
         options: {
           min: 8,
@@ -71,12 +82,15 @@ module.exports = {
       errorMessage: 'A senha precisa conter pelo menos 8 caracteres',
     },
     password_confirmation: {
-      notEmpty: true,
       errorMessage: 'A confirmação da senha não pode estar vazia',
       custom: {
         options: (value, {
           req
         }) => {
+          if (req.body.password === undefined){
+            return true;
+          };
+
           if (value !== req.body.password) {
             throw new Error('A confirmação da senha não é igual a senha');
           };
@@ -84,17 +98,6 @@ module.exports = {
           return true;
         },
       },
-    },
-  }),
-  signIn: checkSchema({
-    email: {
-      isEmail: true,
-      normalizeEmail: true,
-      errorMessage: 'O seu e-mail precisa ser um e-mail válido',
-    },
-    password: {
-      notEmpty: true,
-      errorMessage: 'O campo de senha não pode estar vazio',
     },
   }),
 };

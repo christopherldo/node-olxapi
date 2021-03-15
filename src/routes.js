@@ -15,6 +15,7 @@ const {
 
 const {
   AuthValidator,
+  UserValidator,
 } = require('../app/validators');
 
 router.get('/ping', (req, res) => {
@@ -42,6 +43,7 @@ router.get('/user/me',
 
 router.put('/user/me',
   AuthMiddleware.private,
+  UserValidator.editAction,
   UserController.editAction,
 );
 
