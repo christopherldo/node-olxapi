@@ -18,7 +18,7 @@ server.use(express.urlencoded({
 
 server.use(fileupload());
 
-server.use(express.static(__dirname + '/public'));
+server.use(express.static(__dirname + '/../public'));
 
 server.use('/api', routes);
 
