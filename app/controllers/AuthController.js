@@ -7,7 +7,8 @@ const uuid = require('uuid');
 const jwt = require('jsonwebtoken');
 
 const {
-  AuthService
+  AuthService,
+  UserService,
 } = require('../services');
 
 const secret = process.env.JWT_SECRET;
@@ -27,7 +28,7 @@ module.exports = {
     const email = data.email;
     const password = data.password;
 
-    const user = await AuthService.getUserByEmail(email);
+    const user = await UserService.getUserByEmail(email);
 
     const loginError = {
       error: {
@@ -85,7 +86,7 @@ module.exports = {
 
     do {
       public_id = uuid.v4();
-    } while (await AuthService.getUserByPublicID(public_id));
+    } while (await UserService.getUserByPublicID(public_id));
 
     const newUser = {
       public_id,
