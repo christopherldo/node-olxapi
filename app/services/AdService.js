@@ -25,6 +25,12 @@ module.exports = {
     });
   },
   getOne: async public_id => {
+    await Ad.increment('views', {
+      by: 1,
+      where: {
+        public_id,
+      },
+    });
     return await Ad.findOne({
       attributes: [
         'public_id',
