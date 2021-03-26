@@ -1,4 +1,4 @@
-const {AdService, AdImageService} = require('../services');
+const {AdService, AdImageService, UserService} = require('../services');
 
 module.exports = {
   getItem: async (req, res) => {
@@ -15,9 +15,29 @@ module.exports = {
 
     if(other === 'true'){
       json.images = [];
-      const images = await AdImageService.findByAdPublicID(public_id);
+      
+      const imagesPromise = new Promise((resolve, reject) => {
+        resolve(AdImageService.findByAdPublicID(public_id));
+      });
+      
+      const userPromise = new Promise((resolve, reject) => {
+        resolve(UserService.getUserByPublicID(ad.id_user));
+      });
+      
+      const [images, user] = await Promise.all([
+        imagesPromise,
+        userPromise,
+      ]);
+
       for(let image of images){
         json.images.push(image.url);
+      };
+
+      json.user_info = {
+        public_id: user.public_id,
+        name: user.name,
+        email: user.email,
+        state: user.state,
       };
     };
 
