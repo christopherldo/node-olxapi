@@ -10,4 +10,12 @@ module.exports = {
       },
     });
   },
+  getDefaultImage: async ad_id => {
+    return await AdImage.findOne({
+      where: {
+        ad_id,
+        default: 1,
+      },
+    });
+  },
 };
