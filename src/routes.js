@@ -16,6 +16,7 @@ const {
 const {
   AuthValidator,
   UserValidator,
+  AdValidator,
 } = require('../app/validators');
 
 router.get('/ping', (req, res) => {
@@ -49,7 +50,10 @@ router.put('/user/me',
 
 router.get('/categories', CategoryController.getCategories);
 
-router.get('/ad/item', AdController.getItem);
+router.get('/ad/item', 
+  AdValidator.getItem,
+  AdController.getItem
+);
 
 router.get('/ad/list', AdController.getList);
 

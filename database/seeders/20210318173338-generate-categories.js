@@ -18,10 +18,6 @@ module.exports = {
         name: 'Eletrônicos',
         slug: 'electronics',
       },
-      {
-        name: 'Esportes',
-        slug: 'sports',
-      },
     ]);
   },
 

@@ -18,10 +18,7 @@ module.exports = {
         'price',
         'price_negotiable',
       ],
-      order: [
-        ['date_created', 'DESC'],
-      ],
-      limit: options.limit,
+      ...options,
     });
   },
   getOne: async public_id => {
