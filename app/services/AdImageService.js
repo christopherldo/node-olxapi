@@ -18,4 +18,7 @@ module.exports = {
       },
     });
   },
+  save: async adImageObject => {
+    return await AdImage.create(adImageObject);
+  },
 };

@@ -21,13 +21,15 @@ module.exports = {
       ...options,
     });
   },
-  getOne: async public_id => {
-    await Ad.increment('views', {
-      by: 1,
-      where: {
-        public_id,
-      },
-    });
+  getOne: async (public_id, increment) => {
+    if(increment) {
+      await Ad.increment('views', {
+        by: 1,
+        where: {
+          public_id,
+        },
+      });
+    };
     return await Ad.findOne({
       attributes: [
         'public_id',
@@ -45,5 +47,8 @@ module.exports = {
         public_id,
       },
     });
+  },
+  save: async adObject => {
+    return await Ad.create(adObject);
   },
 };

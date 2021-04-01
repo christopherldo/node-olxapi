@@ -11,6 +11,7 @@ const {
 
 const {
   AuthMiddleware,
+  ImageMiddleware,
 } = require('../app/middlewares');
 
 const {
@@ -59,6 +60,8 @@ router.get('/ad/list', AdController.getList);
 
 router.post('/ad/add',
   AuthMiddleware.private,
+  AdValidator.addAd,
+  ImageMiddleware.resizeImages,
   AdController.addAction,
 );
 
