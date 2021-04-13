@@ -6,7 +6,8 @@ const uuid = require('uuid');
 const {
   AdService,
   AdImageService,
-  UserService
+  UserService,
+  CategoryService,
 } = require('../services');
 
 module.exports = {
@@ -33,6 +34,10 @@ module.exports = {
       user_info: {},
     };
 
+    const categoryPromise = new Promise((resolve, reject) => {
+      resolve(CategoryService.getName(json.category));
+    });
+
     const imagesPromise = new Promise((resolve, reject) => {
       resolve(AdImageService.findByAdPublicID(public_id));
     });
@@ -41,10 +46,16 @@ module.exports = {
       resolve(UserService.getUserByPublicID(ad.id_user));
     });
 
-    const [images, user] = await Promise.all([
+    const [category, images, user] = await Promise.all([
+      categoryPromise,
       imagesPromise,
       userPromise,
     ]);
+
+    json.category = {
+      slug: json.category,
+      name: category.dataValues.name,
+    };
 
     for (let image of images) {
       json.images.push(`${req.protocol}://${req.get('host')}/upload/${image.url}`);

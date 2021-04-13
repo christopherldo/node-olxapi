@@ -9,4 +9,12 @@ module.exports = {
       attributes: ['slug'],
     });
   },
+  getName: async slug => {
+    return await Category.findOne({
+      attributes: ['name'],
+      where: {
+        slug,
+      },
+    });
+  },
 };
