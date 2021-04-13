@@ -2,6 +2,7 @@ const {
   validationResult,
   matchedData
 } = require('express-validator');
+const {Op} = require('sequelize');
 const uuid = require('uuid');
 const {
   AdService,
@@ -97,16 +98,33 @@ module.exports = {
     res.send(json);
   },
   getList: async (req, res) => {
-    const body = req.query;
+    const errors = validationResult(req);
 
-    const sort = body.sort;
-    const limit = Number(body.limit);
+    if (errors.isEmpty() === false) {
+      res.status(400).send({
+        error: errors.mapped(),
+      });
+      return;
+    };
+
+    const data = matchedData(req);
+
+    const sort = data.sort ? data.sort : 'DESC';
+    const limit = data.limit ? data.limit : 15;
+    const q = data.q;
+    const cat = data.cat;
+    const state = data.state;
 
     const options = {
-      order: [
-        ['date_created', 'DESC'],
-      ],
       limit,
+      order: [['date_created', sort.toUpperCase()]],
+    };
+
+    if(q || cat || state){
+      options.where = {};
+      if(q) options.where.title = {[Op.like]: `%${q}%`};
+      if(cat) options.where.category = cat;
+      if(state) options.where.state = state.toUpperCase();
     };
 
     const ads = await AdService.getList(options);
@@ -157,11 +175,14 @@ module.exports = {
       id_user: user.public_id,
       category: data.category,
       date_created: new Date().toISOString(),
+      state: user.state,
       title: data.title,
       price,
       price_negotiable: data.price_negotiable,
       description: data.description,
     };
+
+    console.log(newAd);
 
     imagesName.forEach(async imageName => {
       const newAdImage = {
