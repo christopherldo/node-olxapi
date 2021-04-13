@@ -142,6 +142,14 @@ module.exports = {
       json.ads.push(ad);
     };
 
+    if (json.ads.length === 0) {
+      json.error = {
+        ads: {
+          msg: 'Nenhum resultado encontrado',
+        },
+      };
+    };
+
     res.send(json);
   },
   addAction: async (req, res) => {
