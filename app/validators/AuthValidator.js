@@ -7,17 +7,16 @@ const {
   UserService,
 } = require('../services');
 
-const statesArray = [];
-
-const getUFs = async () => {
-  let states = await StateService.getUFs();
+const getUFs = () => {
+  const statesArray = [];
+  let states = StateService.getUFs();
 
   states.forEach(stateObject => {
     statesArray.push(stateObject.uf);
   });
-};
 
-getUFs();
+  return statesArray;
+};
 
 module.exports = {
   signUp: checkSchema({
@@ -53,6 +52,8 @@ module.exports = {
       },
       custom: {
         options: (value) => {
+          const statesArray = getUFs();
+
           if (statesArray.includes(value) === false) {
             throw new Error('O estado informado não é um UF válido');
           };

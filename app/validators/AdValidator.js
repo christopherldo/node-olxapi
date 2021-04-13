@@ -4,10 +4,82 @@ const {
 
 const {
   AdService,
-  CategoryService
+  CategoryService,
+  StateService,
 } = require('../services');
 
+const getUFs = () => {
+  const statesArray = [];
+  let states = StateService.getUFs();
+
+  states.forEach(stateObject => {
+    statesArray.push(stateObject.uf);
+  });
+
+  return statesArray;
+};
+
 module.exports = {
+  getList: checkSchema({
+    sort: {
+      optional: true,
+      in: [
+        'asc', 'desc',
+      ],
+      errorMessage: 'A ordem só pode ser ASC ou DESC',
+    },
+    limit: {
+      optional: true,
+      toInt: true,
+      isFloat: {
+        min: 1,
+        max: 15,
+      },
+      errorMessage: 'O limite máximo de anúncios por requisição é 15 e o mínimo é 1',
+    },
+    q: {
+      trim: true,
+      optional: true,
+    },
+    cat: {
+      optional: true,
+      custom: {
+        options: async value => {
+          if (value) {
+            const categoriesDatabase = await CategoryService.getSlugs();
+            const categories = [];
+
+            for (category of categoriesDatabase) {
+              categories.push(category.slug);
+            };
+
+            if (categories.includes(value) === false) {
+              throw new Error('A categoria informada não foi encontrada na base de dados');
+            };
+
+            return true;
+          };
+        },
+      },
+    },
+    state: {
+      optional: true,
+      custom: {
+        options: (value) => {
+          if (value) {
+            console.log(value)
+            const statesArray = getUFs();
+
+            if (statesArray.includes(value) === false) {
+              throw new Error('O estado informado não é um UF válido');
+            };
+          };
+
+          return true;
+        },
+      },
+    },
+  }),
   getItem: checkSchema({
     id: {
       isUUID: true,

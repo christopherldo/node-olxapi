@@ -56,7 +56,10 @@ router.get('/ad/item',
   AdController.getItem
 );
 
-router.get('/ad/list', AdController.getList);
+router.get('/ad/list',
+  AdValidator.getList,
+  AdController.getList
+);
 
 router.post('/ad/add',
   AuthMiddleware.private,

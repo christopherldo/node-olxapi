@@ -1,12 +1,16 @@
-const {State} = require('../models');
+const State = require('../helpers/states.json');
 
 module.exports = {
-  find: async () => {
-    return await State.findAll();
+  find: () => {
+    return State.states;
   },
-  getUFs: async () => {
-    return await State.findAll({
-      attributes: ['uf'],
+  getUFs: () => {
+    const states = [];
+    State.states.forEach(state => {
+      states.push({
+        uf: state.uf,
+      });
     });
+    return states;
   },
 };
