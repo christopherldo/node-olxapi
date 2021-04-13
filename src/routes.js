@@ -7,18 +7,18 @@ const {
   CategoryController,
   StateController,
   UserController,
-} = require('../app/controllers');
+} = require('./app/controllers');
 
 const {
   AuthMiddleware,
   ImageMiddleware,
-} = require('../app/middlewares');
+} = require('./app/middlewares');
 
 const {
   AuthValidator,
   UserValidator,
   AdValidator,
-} = require('../app/validators');
+} = require('./app/validators');
 
 router.get('/ping', (req, res) => {
   res.json({
