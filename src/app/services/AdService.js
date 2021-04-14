@@ -11,7 +11,7 @@ module.exports = {
     });
   },
   getList: async options => {
-    return await Ad.findAll({
+    return await Ad.findAndCountAll({
       attributes: [
         'public_id',
         'title',

@@ -127,10 +127,13 @@ module.exports = {
       if(state) options.where.state = state.toUpperCase();
     };
 
-    const ads = await AdService.getList(options);
+    const adsQuery = await AdService.getList(options);
+    const ads = adsQuery.rows;
+    const total = adsQuery.count;
 
     const json = {
       ads: [],
+      total,
     };
 
     for (let ad of ads) {
