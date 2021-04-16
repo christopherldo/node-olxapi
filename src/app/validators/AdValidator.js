@@ -30,11 +30,11 @@ module.exports = {
     },
     limit: {
       optional: true,
-      toInt: true,
       isFloat: {
         min: 1,
         max: 15,
       },
+      toInt: true,
       errorMessage: 'O limite máximo de anúncios por requisição é 15 e o mínimo é 1',
     },
     q: {
@@ -78,6 +78,11 @@ module.exports = {
           return true;
         },
       },
+    },
+    offset: {
+      optional: true,
+      isNumeric: true,
+      toInt: true,
     },
   }),
   getItem: checkSchema({

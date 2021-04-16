@@ -80,7 +80,8 @@ module.exports = {
         },
       };
 
-      const ads = await AdService.getList(options);
+      const adsQuery = await AdService.getList(options);
+      const ads = adsQuery.rows;
 
       json.others = [];
 
@@ -111,6 +112,7 @@ module.exports = {
 
     const sort = data.sort ? data.sort : 'DESC';
     const limit = data.limit ? data.limit : 15;
+    const offset = data.offset ? data.offset : 0;
     const q = data.q;
     const cat = data.cat;
     const state = data.state;
@@ -118,6 +120,7 @@ module.exports = {
     const options = {
       limit,
       order: [['date_created', sort.toUpperCase()]],
+      offset,
     };
 
     if(q || cat || state){

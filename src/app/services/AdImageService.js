@@ -8,6 +8,7 @@ module.exports = {
       where: {
         ad_id,
       },
+      order: [['default', 'DESC']],
     });
   },
   getDefaultImage: async ad_id => {
