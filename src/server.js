@@ -5,6 +5,7 @@ const express = require('express');
 const cors = require('cors');
 const fileupload = require('express-fileupload');
 const routes = require('./routes');
+const {ResetController} = require('./app/controllers');
 
 const server = express();
 
@@ -26,3 +27,5 @@ server.use('/api', routes);
 server.listen(process.env.PORT, () => {
   console.log(`Server running on port: ${process.env.PORT}`);
 });
+
+ResetController.resetAdsOnStart();

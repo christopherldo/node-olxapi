@@ -51,4 +51,11 @@ module.exports = {
   save: async adObject => {
     return await Ad.create(adObject);
   },
+  reset: async () => {
+    const ads = await Ad.findAll();
+
+    ads.forEach(async ad => {
+      await ad.destroy();
+    });
+  },
 };

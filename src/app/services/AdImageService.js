@@ -22,4 +22,11 @@ module.exports = {
   save: async adImageObject => {
     return await AdImage.create(adImageObject);
   },
+  reset: async () => {
+    const adImages = await AdImage.findAll();
+
+    adImages.forEach(async image => {
+      await image.destroy();
+    });
+  },
 };
