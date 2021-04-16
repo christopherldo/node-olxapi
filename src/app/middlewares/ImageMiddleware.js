@@ -34,7 +34,7 @@ module.exports = {
           .resize(500, 500)
           .toFormat("webp")
           .webp()
-          .toFile(`${__dirname}/../../public/upload/${newFilename}`);
+          .toFile(`${__dirname}/../../../public/upload/${newFilename}`);
         req.body.images.push(newFilename);
       }),
     );
