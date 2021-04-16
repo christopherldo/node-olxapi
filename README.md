@@ -7,3 +7,6 @@
 * ```yarn sequelize db:seed:all``` to setup default needed data on db;
 * ```npm start``` or ```yarn start``` to start the server;
 * If you want to undo the database creation: ```npx sequelize db:migrate:undo``` or ```yarn sequelize db:migrate:undo```;
+
+# Front-end
+Front-end app here: <a href="https://github.com/christopherldo/react-olx" target="_blank" rel="noreferrer">React OLX</a>
