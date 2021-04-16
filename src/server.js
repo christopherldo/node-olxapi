@@ -9,6 +9,7 @@ const routes = require('./routes');
 const server = express();
 
 server.use(cors());
+server.enable('trust proxy');
 
 server.use(express.json());
 
