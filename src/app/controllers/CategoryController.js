@@ -10,7 +10,7 @@ module.exports = {
       categories.push({
         name: category.name,
         slug: category.slug,
-        img: `http://${req.get('Host')}/assets/images/categories/${category.slug}.webp`,
+        img: `${req.protocol}://${req.get('host')}/assets/images/categories/${category.slug}.webp`,
       });
     };
 
